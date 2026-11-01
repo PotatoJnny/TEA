@@ -1,0 +1,38 @@
+model: meta-llama/Llama-3.2-1B-Instruct
+
+dataset:
+  name: trl-lib/ultrafeedback-prompt
+  split: train
+  prompt_column: prompt
+
+reward_model:
+  name: Skywork/Skywork-Reward-V2-Llama-3.1-8B
+  device: cuda:0
+  batch_size: 4
+  max_length: 512
+
+algorithm:
+  method: prefix_tea
+  alpha: 0.25
+  n_target: 128
+
+training:
+  output_dir: outputs/prefix_tea
+  seed: 0
+  learning_rate: 1.0e-5
+  max_steps: 100
+  num_generations: 64
+  per_device_train_batch_size: 4
+  gradient_accumulation_steps: 16
+  max_completion_length: 1024
+  temperature: 1.0
+  beta: 0.1
+  loss_type: grpo
+  scale_rewards: none
+  bf16: true
+  gradient_checkpointing: true
+  use_vllm: false
+  logging_steps: 1
+  save_steps: 50
+  save_total_limit: 2
+  report_to: none
